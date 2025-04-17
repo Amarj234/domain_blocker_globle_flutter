@@ -7,33 +7,30 @@ plugins {
 
 android {
     namespace = "com.example.domain_block"
-    compileSdk = 34
-    ndkVersion= "27.0.12077973"
+    compileSdk = 35
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+        isCoreLibraryDesugaringEnabled = true
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
+        jvmTarget = "1.8"
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.example.domain_block"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
+        // Set the minSdk and targetSdk to values from the Flutter project (ensure they exist in `flutter.gradle`).
+        minSdk =  21  // Default to 21 if not found
         targetSdk = 34
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        versionCode = flutter.versionCode  // Default to 1 if not found
+        versionName = flutter.versionName  // Default to "1.0.0" if not found
     }
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
         }
     }
@@ -43,3 +40,9 @@ flutter {
     source = "../.."
 }
 
+dependencies {
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.2.2")
+
+    implementation("androidx.activity:activity-ktx:1.5.0")
+    implementation("androidx.core:core-ktx:1.7.0")
+}

@@ -30,7 +30,7 @@ class DnsBlockVpnService : VpnService(), Runnable {
             .build()
 
         // Start the service as a foreground service
-     //   startForeground(1, notification)
+        //   startForeground(1, notification)
         val builder = Builder()
         builder.setSession("DNS Blocker")
             .addAddress("10.0.0.2", 32)
