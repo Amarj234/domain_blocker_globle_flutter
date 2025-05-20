@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_storage/get_storage.dart';
 import 'background_service.dart';
+import 'dns_vpn_controller.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,6 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final Uri? uri = Uri.tryParse(url);
     return uri != null && uri.hasAbsolutePath;
   }
+
   @override
   @override
   Widget build(BuildContext context) {
@@ -81,15 +83,18 @@ class _MyHomePageState extends State<MyHomePage> {
                     borderRadius: BorderRadius.circular(30.0),
                     borderSide: BorderSide.none,
                   ),
-                  contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                  contentPadding: EdgeInsets.symmetric(
+                      vertical: 20, horizontal: 15),
                   prefixIcon: Icon(Icons.link, color: Colors.deepPurple),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30.0),
-                    borderSide: BorderSide(color: Colors.deepPurpleAccent, width: 2),
+                    borderSide: BorderSide(
+                        color: Colors.deepPurpleAccent, width: 2),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30.0),
-                    borderSide: BorderSide(color: Colors.deepPurpleAccent, width: 1.5),
+                    borderSide: BorderSide(
+                        color: Colors.deepPurpleAccent, width: 1.5),
                   ),
                 ),
                 validator: (value) {
@@ -104,7 +109,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: ElevatedButton.styleFrom(
                   // Background color
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0), // Button with rounded corners
+                    borderRadius: BorderRadius.circular(
+                        30.0), // Button with rounded corners
                   ),
                   padding: EdgeInsets.symmetric(vertical: 15),
                 ),
@@ -113,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     final url = urlController.text;
 
                     SaveList().saveList(url);
-                    urlController.text='';
+                    urlController.text = '';
                     // Proceed with the URL
                     print('Valid URL: $url');
                     setState(() {
@@ -127,41 +133,54 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               SizedBox(height: 20),
-              if(SaveList().getList()!=null || SaveList().getList()!=[])  ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
+              if(SaveList().getList() != null ||
+                  SaveList().getList() != []) ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: SaveList().getList()?.length,
+                  itemCount: SaveList()
+                      .getList()
+                      ?.length,
 
-                  itemBuilder: (context,index){
-                List<String>? myList=SaveList().getList();
-                return Container(
-                  margin: EdgeInsets.symmetric(vertical: 5),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(10)
-                  ),
-                  child: ListTile(
+                  itemBuilder: (context, index) {
+                    List<String>? myList = SaveList().getList();
+                    return Container(
+                      margin: EdgeInsets.symmetric(vertical: 5),
+                      decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(10)
+                      ),
+                      child: ListTile(
 
-                    title: Text(myList![index]),
-                    trailing: IconButton(onPressed: (){
-                      SaveList().deleteData(myList[index]);
-                      setState(() {
+                        title: Text(myList![index]),
+                        trailing: IconButton(onPressed: () {
+                          SaveList().deleteData(myList[index]);
+                          setState(() {
 
-                      });
-                    }, icon: Icon(Icons.delete,color: Colors.pink,)),
-                  ),
-                );
-              })
+                          });
+                        }, icon: Icon(Icons.delete, color: Colors.pink,)),
+                      ),
+                    );
+                  })
             ],
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(onPressed: ()async{
-       //  initializeService();
+      floatingActionButton: FloatingActionButton(onPressed: () async {
+        //  initializeService();
         incrementCounter();
 
-         SystemNavigator.pop();
-      },child: Icon(Icons.block,color: Colors.red,),),
+        SystemNavigator.pop();
+      }, child: Icon(Icons.block, color: Colors.red,),),
     );
+  }
+
+  DnsVpnController dnsVpnController = DnsVpnController();
+  bool isVpnRunning = false;
+
+  void incrementCounter() {
+    if (!isVpnRunning) {
+      dnsVpnController.startVpn();
+      isVpnRunning = true; // Mark VPN as running
+    }
   }
 }

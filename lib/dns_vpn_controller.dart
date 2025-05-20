@@ -2,13 +2,13 @@ import 'package:domain_block/save_local.dart';
 import 'package:flutter/services.dart';
 
 class DnsVpnController {
-  static const MethodChannel _channel = MethodChannel('dns.blocker.vpn');
+  static const platform = MethodChannel('vpn_service');
 
    List<String> blockedDomains=[];
-  static const platform = MethodChannel('com.example.domain_block/foregroundService');
+
   Future<void> startVpn() async {
     try {
-      // await _channel.invokeMethod('requestBatteryWhitelist');
+      final result = await platform.invokeMethod('startVpn');
       if(SaveList().getList()==null || SaveList().getList()==[]){
 
     blockedDomains = [ 'youtube.com'];
@@ -17,7 +17,7 @@ class DnsVpnController {
         blockedDomains = SaveList().getList()??[ 'youtube.com'];
       }
 print(blockedDomains);
-    await _channel.invokeMethod('startVpn', {'domains': blockedDomains});
+   // await _channel.invokeMethod('startVpn', {'domains': blockedDomains});
     } catch (e) {
       print("Error starting VPN: $e");
     }
@@ -25,7 +25,7 @@ print(blockedDomains);
 
   Future<void> stopVpn() async {
     try {
-      await _channel.invokeMethod('stopVpn');
+    //  await _channel.invokeMethod('stopVpn');
     } catch (e) {
       print("Error stopping VPN: $e");
     }
