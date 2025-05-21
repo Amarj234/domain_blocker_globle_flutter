@@ -19,6 +19,13 @@ class SaveList {
  }
   }
 
+  saveRunning(bool isRunning){
+    box.write('isRunning', isRunning);
+  }
+  bool? getRunning(){
+    return box.read('isRunning')??false;
+  }
+
 
   List<String>? getList(){
 

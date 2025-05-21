@@ -34,10 +34,16 @@ class MainActivity : FlutterActivity() {
                         result.success(true)
                     }
                     "stopVpn" -> {
-                        stopService(Intent(this, DnsBlockVpnService::class.java))
-                        result.success(true)
+                        android.util.Log.d("MainActivity", "Stopping VPN service")
+                        val intent = Intent(this, DnsBlockVpnService::class.java)
+                        intent.action = "STOP_VPN"
+                        startService(intent)
+
                     }
-                    else -> result.notImplemented()
+
+                    else -> {
+                        result.notImplemented()  // <- Must have parentheses here
+                    }
                 }
             }
     }

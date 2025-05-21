@@ -14,6 +14,11 @@ class DnsBlockVpnService : VpnService() {
     private var vpnInterface: ParcelFileDescriptor? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        if (intent?.action == "STOP_VPN") {
+            stopForeground(true)
+            stopVpn()
+            return START_NOT_STICKY
+        }
         startMyForegroundService()
         setupVpn()
         return START_STICKY
@@ -53,10 +58,23 @@ class DnsBlockVpnService : VpnService() {
         vpnInterface = builder.establish()
     }
 
-    override fun onDestroy() {
+    private fun stopVpn() {
+        android.util.Log.d("MainActivity", "Really stopping VPN service")
         vpnInterface?.close()
         vpnInterface = null
+    }
+
+
+    override fun onDestroy() {
+        stopVpn()
+        stopSelf()
+        android.util.Log.d("DnsBlockVpnService", "VPN stopped and service destroyed")
         super.onDestroy()
     }
+
+
+
+
 }
+
 
