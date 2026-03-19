@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.example.domain_block"
-    compileSdk = 35
+    compileSdk = 36
     ndkVersion = "27.0.12077973"
 
     compileOptions {
@@ -23,7 +23,7 @@ android {
     defaultConfig {
         applicationId = "com.example.domain_block"
         // Set the minSdk and targetSdk to values from the Flutter project (ensure they exist in `flutter.gradle`).
-        minSdk =  21  // Default to 21 if not found
+        minSdk = flutter.minSdkVersion  // Default to 21 if not found
         targetSdk = 34
         versionCode = flutter.versionCode  // Default to 1 if not found
         versionName = flutter.versionName  // Default to "1.0.0" if not found
